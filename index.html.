@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StudyHub – Free Study Tools for School Students</title>
+<meta name="description" content="Free study tools for Indian school students: percentage calculator, marks calculator, exam countdown, study timer, timetable, homework and revision planner.">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0d1220;--card:#161d33;--ink:#eef1fb;--mute:#97a1bf;--line:#27304f;--accent:#7c9bff;--accent-ink:#0d1220;--hi:#ffd23f;--ok:#1f9d55;--bad:#ff6b6b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
+
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Lexend,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+header{padding:22px 16px 8px;max-width:760px;margin:0 auto}
+h1{font-size:1.7rem;margin:0;letter-spacing:-.02em}
+h1 span{background:linear-gradient(transparent 58%,var(--hi) 58%);padding:0 4px}
+header p{margin:6px 0 0;color:var(--mute);font-size:.95rem}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 16px;max-width:760px;margin:0 auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 14px;border-radius:999px;font:inherit;font-size:.88rem;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+main{max-width:760px;margin:0 auto;padding:16px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+h2{font-size:1.2rem;margin:0 0 4px}
+.sub{color:var(--mute);font-size:.88rem;margin:0 0 14px}
+label{display:block;font-size:.82rem;color:var(--mute);margin:10px 0 4px}
+input,select{width:100%;font:inherit;font-size:1rem;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+input:focus,select:focus,button:focus-visible{outline:3px solid var(--hi);outline-offset:1px}
+.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
+.btn{font:inherit;font-size:.95rem;border:0;border-radius:10px;padding:11px 16px;background:var(--accent);color:var(--accent-ink);cursor:pointer;margin-top:12px}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 10px;margin:0;font-size:.8rem}
+.result{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--bg);border-left:5px solid var(--hi);font-weight:600;min-height:20px}
+.item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}.item .t{flex:1;min-width:0;overflow-wrap:anywhere}
+.item small{display:block;color:var(--mute);font-weight:400}
+.done .t{text-decoration:line-through;opacity:.55}
+.item input[type=checkbox]{width:22px;height:22px;flex:none}
+.x{border:0;background:none;color:var(--bad);font-size:1.1rem;cursor:pointer;padding:4px 8px}
+.big{font-size:3.4rem;font-weight:700;text-align:center;letter-spacing:-.03em;margin:8px 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:.82rem;cursor:pointer}
+.chip.on{background:var(--ink);color:var(--bg)}
+.days{font-weight:700;color:var(--accent);white-space:nowrap}
+.empty{color:var(--mute);font-size:.9rem;padding:8px 0}
+.mrow{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:6px;margin-bottom:6px}
+.rev{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.rev label{display:flex;align-items:center;gap:5px;margin:0;font-size:.78rem;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+.rev input{width:16px;height:16px}
+[hidden]{display:none!important}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.9);opacity:.3}100%{transform:none;opacity:1}}
+@keyframes float{50%{transform:translateY(-7px)}}
+@keyframes drift{50%{transform:translate(30px,-24px) scale(1.15)}}
+@keyframes shine{to{transform:translateX(120%)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.tile{animation:rise .5s both;animation-delay:calc(var(--n)*70ms)}
+.tile .ic{transition:transform .2s}.tile:hover .ic{transform:scale(1.14) rotate(-4deg)}
+section.on{animation:rise .35s both}
+.btn{transition:transform .1s}.btn:active{transform:scale(.96)}
+main{padding-bottom:110px}
+#login{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;background:#0a0f1e;overflow:hidden;transition:transform .7s cubic-bezier(.7,0,.2,1),opacity .7s}
+#login.out{transform:translateY(-100%);opacity:0}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;animation:drift 9s ease-in-out infinite}
+.lcard{position:relative;width:100%;max-width:380px;margin-top:60px;background:#161d33dd;border:1px solid var(--line);border-radius:22px;padding:0 22px 26px;text-align:center;animation:rise .8s .2s both}
+.mascot{width:120px;height:120px;margin:-60px auto 4px;animation:float 3.2s ease-in-out infinite}
+svg .eye{transform-box:fill-box;transform-origin:center;animation:blink 4s infinite}
+.gbtn{position:relative;overflow:hidden;width:100%;font:inherit;font-weight:600;border:0;border-radius:12px;padding:12px;cursor:pointer;margin-top:14px;background:var(--accent);color:var(--accent-ink)}
+.gbtn:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,#ffffff66,transparent 70%);transform:translateX(-120%);animation:shine 2.6s infinite}
+#pip{position:fixed;right:10px;bottom:0;z-index:20;display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));pointer-events:none}
+#pip>*{pointer-events:auto}
+#bubble{max-width:min(270px,80vw);background:var(--card);border:1px solid var(--accent);border-radius:16px 16px 4px 16px;padding:12px 14px;font-size:.88rem;animation:pop .3s}
+.brow{display:flex;gap:6px;margin-top:8px}
+#pbtn{width:72px;height:72px;border:0;background:none;padding:0;cursor:pointer;animation:float 3.2s ease-in-out infinite}
+#pbtn svg,.mascot svg{width:100%;height:100%}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+body{background:radial-gradient(900px 480px at 85% -8%,#27357a66,transparent),radial-gradient(700px 400px at 0% 30%,#1b4d5a44,transparent),var(--bg);background-attachment:fixed;min-height:100vh}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:620px){.grid{grid-template-columns:repeat(3,1fr)}}
+.tile{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .15s,border-color .15s}
+.tile:hover,.tile:focus-visible{transform:translateY(-3px);border-color:var(--c);outline:none}
+.tile .ic{display:flex;align-items:center;justify-content:center;height:92px;font-size:2.4rem;background:linear-gradient(160deg,#ffffff40,#00000030),var(--c)}
+.tile b{display:block;padding:10px 12px 0;font-size:1rem}
+.tile small{display:block;padding:2px 12px 12px;color:var(--mute);font-size:.78rem;line-height:1.35}
+.back{font:inherit;font-size:.9rem;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer}
+.bar{display:flex;align-items:center;gap:12px;max-width:760px;margin:0 auto;padding:10px 16px}
+footer{max-width:760px;margin:10px auto 30px;padding:0 16px;color:var(--mute);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<div id="login" hidden><div class="blob" style="width:300px;height:300px;background:#4f6bff;left:-80px;top:-60px"></div><div class="blob" style="width:260px;height:260px;background:#ff6b8a;right:-70px;bottom:-40px;animation-delay:-3s"></div><div class="blob" style="width:200px;height:200px;background:#5eead4;right:20%;top:12%;animation-delay:-6s"></div>
+<div class="lcard"><div class="mascot" id="lm"></div><h2>Welcome to StudyHub</h2><p class="sub">Sign in to save your plans and get tips from Pip, your study buddy.</p><div id="gbox" style="display:flex;justify-content:center"></div><label for="ln">Your name</label><input id="ln" placeholder="e.g. Aarav" autocomplete="given-name"><button class="gbtn" id="lgo">Start studying</button></div></div>
+<header id="hd">
+<h1>Study<span>Hub</span></h1>
+<p>Free tools to plan, practise and track your studies.</p>
+</header>
+<nav id="bar" hidden><div class="bar"><button class="back" id="back">← All tools</button><b id="bt"></b></div></nav>
+<main>
+<div id="home" class="grid"></div>
+
+<section id="percent"><div class="card">
+<h2>Percentage Calculator</h2><p class="sub">Pick what you want to find.</p>
+<label>What do you want to find?</label>
+<select id="pmode"><option value="a">X% of a number</option><option value="b">X is what % of Y</option><option value="c">% increase or decrease</option></select>
+<div class="row"><div><label id="pl1">Percentage (%)</label><input id="p1" type="number" inputmode="decimal"></div><div><label id="pl2">Number</label><input id="p2" type="number" inputmode="decimal"></div></div>
+<button class="btn" id="pgo">Calculate</button><div class="result" id="pres">Your answer will show here.</div>
+</div></section>
+
+<section id="marks"><div class="card">
+<h2>Marks Calculator</h2><p class="sub">Add your subjects to see total, percentage and grade.</p>
+<div id="mlist"></div>
+<div class="row"><button class="btn alt" id="madd">+ Add subject</button><button class="btn" id="mgo">Calculate</button></div>
+<div class="result" id="mres">Fill marks and tap Calculate.</div>
+</div></section>
+
+<section id="countdown"><div class="card">
+<h2>Exam Countdown</h2><p class="sub">See how many days are left for each exam.</p>
+<label>Exam name</label><input id="cn" placeholder="e.g. Maths Final">
+<label>Exam date</label><input id="cd" type="date">
+<button class="btn" id="cadd">Add exam</button></div>
+<div class="card" id="clist"></div></section>
+
+<section id="timer"><div class="card">
+<h2>Study Timer</h2><p class="sub">Study in focused rounds, then take a short break.</p>
+<div class="chips" id="tmodes"></div>
+<div class="big" id="tdisp">25:00</div>
+<div class="row"><button class="btn" id="tgo">Start</button><button class="btn alt" id="trs">Reset</button></div>
+<div class="result" id="tmsg">Focus rounds done today: 0</div>
+</div></section>
+
+<section id="timetable"><div class="card">
+<h2>Timetable Maker</h2><p class="sub">Choose a day, then add your classes or study slots.</p>
+<div class="chips" id="ttdays"></div>
+<div class="row"><div><label>Time</label><input id="ttt" type="time"></div><div><label>Subject</label><input id="tts" placeholder="e.g. Science"></div></div>
+<button class="btn" id="ttadd">Add to this day</button></div>
+<div class="card" id="ttlist"></div></section>
+
+<section id="homework"><div class="card">
+<h2>Homework Planner</h2><p class="sub">Write down homework and tick it off when done.</p>
+<label>Task</label><input id="hw" placeholder="e.g. Maths exercise 5.2">
+<div class="row"><div><label>Subject</label><input id="hs" placeholder="Maths"></div><div><label>Due date</label><input id="hd" type="date"></div></div>
+<button class="btn" id="hadd">Add homework</button></div>
+<div class="card" id="hlist"></div></section>
+
+<section id="revision"><div class="card">
+<h2>Revision Planner</h2><p class="sub">Add a topic you studied today. We will plan revisions after 1, 3, 7 and 15 days.</p>
+<label>Topic</label><input id="rt" placeholder="e.g. Photosynthesis">
+<label>Date studied</label><input id="rd" type="date">
+<button class="btn" id="radd">Plan revisions</button></div>
+<div class="card" id="rlist"></div></section>
+
+</main>
+<footer>Made for students. Your data stays on your own device.</footer>
+<div id="pip" hidden><div id="bubble" hidden><div id="btxt"></div><div class="brow"><button class="chip" id="bnext">Next tip</button><button class="chip" id="bclose">Got it</button></div></div><button id="pbtn" aria-label="Ask Pip for help"></button></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem('sh_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('sh_'+k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
+const dayDiff=s=>Math.round((new Date(s+'T00:00:00')-new Date(today()+'T00:00:00'))/864e5);
+const addDays=(s,n)=>{const d=new Date(s+'T00:00:00');d.setDate(d.getDate()+n);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
+const fmt=s=>new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+const num=v=>parseFloat(v);const r2=n=>Math.round(n*100)/100;
+
+/* Tabs */
+const T=[['percent','Percentage','％','Find any percentage fast','#ff9f6b'],['marks','Marks','📝','Total, percentage and grade','#ffd23f'],['countdown','Exam Countdown','⏳','Days left for each exam','#ff6b8a'],['timer','Study Timer','⏱️','Focus rounds and breaks','#5eead4'],['timetable','Timetable','🗓️','Plan your week','#7c9bff'],['homework','Homework','📚','Track tasks and due dates','#b79bff'],['revision','Revision','🔁','Revise on day 1, 3, 7, 15','#6ee7a1']];
+const home=$('#home');
+home.innerHTML=T.map(([id,n,ic,d,c],i)=>`<a class="tile" href="#${id}" style="--c:${c};--n:${i}"><span class="ic">${ic}</span><b>${n}</b><small>${d}</small></a>`).join('');
+function show(){const id=location.hash.slice(1),ok=T.some(t=>t[0]===id);document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',ok&&s.id===id));home.hidden=ok;$('#hd').hidden=ok;$('#bar').hidden=!ok;if(ok)$('#bt').textContent=T.find(t=>t[0]===id)[1];window.scrollTo(0,0);pipSay(ok?id:'home')}
+window.onhashchange=show;
+$('#back').onclick=()=>{location.hash=''};
+
+/* Percentage */
+const pm={a:['Percentage (%)','Number'],b:['Value X','Total Y'],c:['Old value','New value']};
+$('#pmode').onchange=()=>{const m=pm[$('#pmode').value];$('#pl1').textContent=m[0];$('#pl2').textContent=m[1]};
+$('#pgo').onclick=()=>{const a=num($('#p1').value),b=num($('#p2').value),m=$('#pmode').value,o=$('#pres');
+if(isNaN(a)||isNaN(b)){o.textContent='Please enter both numbers.';return}
+if(m==='a')o.textContent=a+'% of '+b+' = '+r2(a*b/100);
+else if(m==='b'){if(!b){o.textContent='Y cannot be 0.';return}o.textContent=a+' is '+r2(a/b*100)+'% of '+b}
+else{if(!a){o.textContent='Old value cannot be 0.';return}const c=(b-a)/a*100;o.textContent=(c>=0?'Increase of ':'Decrease of ')+r2(Math.abs(c))+'%'}};
+
+/* Marks */
+let mrows=store.get('marks',[{n:'Maths',o:'',m:100},{n:'Science',o:'',m:100},{n:'English',o:'',m:100}]);
+function drawM(){$('#mlist').innerHTML=mrows.map((r,i)=>`<div class="mrow"><input data-i="${i}" data-k="n" value="${esc(r.n)}" placeholder="Subject" aria-label="Subject"><input data-i="${i}" data-k="o" value="${esc(r.o)}" type="number" inputmode="decimal" placeholder="Got" aria-label="Marks obtained"><input data-i="${i}" data-k="m" value="${esc(r.m)}" type="number" inputmode="decimal" placeholder="Out of" aria-label="Maximum marks"><button class="x" data-del="${i}" aria-label="Remove subject">✕</button></div>`).join('')}
+$('#mlist').oninput=e=>{const i=e.target.dataset.i;if(i!==undefined){mrows[i][e.target.dataset.k]=e.target.value;store.set('marks',mrows)}};
+$('#mlist').onclick=e=>{if(e.target.dataset.del!==undefined){mrows.splice(e.target.dataset.del,1);store.set('marks',mrows);drawM()}};
+$('#madd').onclick=()=>{mrows.push({n:'',o:'',m:100});store.set('marks',mrows);drawM()};
+$('#mgo').onclick=()=>{let o=0,m=0;mrows.forEach(r=>{const a=num(r.o),b=num(r.m);if(!isNaN(a)&&!isNaN(b)){o+=a;m+=b}});
+if(!m){$('#mres').textContent='Enter marks for at least one subject.';return}
+const p=o/m*100,g=p>=91?'A1':p>=81?'A2':p>=71?'B1':p>=61?'B2':p>=51?'C1':p>=41?'C2':p>=33?'D':'Needs improvement';
+$('#mres').innerHTML='Total: '+o+' / '+m+'<br>Percentage: '+r2(p)+'%<br>Grade (CBSE-style): '+g};
+
+/* Countdown */
+let ex=store.get('exams',[]);
+function drawC(){const l=[...ex].sort((a,b)=>a.d<b.d?-1:1);$('#clist').innerHTML=l.length?l.map(e=>{const n=dayDiff(e.d);return `<div class="item"><div class="t">${esc(e.n)}<small>${fmt(e.d)}</small></div><div class="days">${n>0?n+' days left':n===0?'Today!':'Done'}</div><button class="x" data-id="${e.id}" aria-label="Delete">✕</button></div>`}).join(''):'<div class="empty">No exams yet. Add your first exam above.</div>'}
+$('#cadd').onclick=()=>{const n=$('#cn').value.trim(),d=$('#cd').value;if(!n||!d)return alert('Enter exam name and date.');ex.push({id:Date.now(),n,d});store.set('exams',ex);$('#cn').value='';drawC()};
+$('#clist').onclick=e=>{if(e.target.dataset.id){ex=ex.filter(x=>x.id!=e.target.dataset.id);store.set('exams',ex);drawC()}};
+
+/* Timer */
+const modes={Focus:25,'Short break':5,'Long break':15};let cur='Focus',left=25*60,run=null,done=store.get('done_'+today(),0);
+function drawT(){const m=Math.floor(left/60),s=left%60;$('#tdisp').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');document.title=run?$('#tdisp').textContent+' – StudyHub':'StudyHub – Free Study Tools for School Students';$('#tmsg').textContent='Focus rounds done today: '+done}
+$('#tmodes').innerHTML=Object.keys(modes).map(k=>`<button class="chip${k===cur?' on':''}" data-m="${k}">${k} (${modes[k]} min)</button>`).join('');
+$('#tmodes').onclick=e=>{const k=e.target.dataset.m;if(!k)return;clearInterval(run);run=null;cur=k;left=modes[k]*60;$('#tgo').textContent='Start';document.querySelectorAll('#tmodes .chip').forEach(c=>c.classList.toggle('on',c.dataset.m===k));drawT()};
+$('#tgo').onclick=()=>{if(run){clearInterval(run);run=null;$('#tgo').textContent='Resume';drawT();return}
+$('#tgo').textContent='Pause';run=setInterval(()=>{left--;if(left<=0){clearInterval(run);run=null;left=0;$('#tgo').textContent='Start';if(cur==='Focus'){done++;store.set('done_'+today(),done)}$('#tmsg').textContent=cur==='Focus'?'Well done! Take a short break.':'Break over. Back to study!';try{navigator.vibrate&&navigator.vibrate(300)}catch(e){}drawT();$('#tmsg').textContent=cur==='Focus'?'Time is up! Focus rounds done today: '+done:'Break over. Ready for the next round?';return}drawT()},1000)};
+$('#trs').onclick=()=>{clearInterval(run);run=null;left=modes[cur]*60;$('#tgo').textContent='Start';drawT()};
+
+/* Timetable */
+const DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];let tt=store.get('tt',{}),td=DN[(new Date().getDay()+6)%7];
+function drawTT(){$('#ttdays').innerHTML=DN.map(d=>`<button class="chip${d===td?' on':''}" data-d="${d}">${d}</button>`).join('');
+const l=(tt[td]||[]).map((x,i)=>({...x,i})).sort((a,b)=>a.t<b.t?-1:1);
+$('#ttlist').innerHTML=l.length?l.map(x=>`<div class="item"><div class="days">${esc(x.t)}</div><div class="t">${esc(x.s)}</div><button class="x" data-i="${x.i}" aria-label="Delete">✕</button></div>`).join(''):'<div class="empty">Nothing planned for '+td+'. Add a slot above.</div>'}
+$('#ttdays').onclick=e=>{if(e.target.dataset.d){td=e.target.dataset.d;drawTT()}};
+$('#ttadd').onclick=()=>{const t=$('#ttt').value,s=$('#tts').value.trim();if(!t||!s)return alert('Enter time and subject.');(tt[td]=tt[td]||[]).push({t,s});store.set('tt',tt);$('#tts').value='';drawTT()};
+$('#ttlist').onclick=e=>{if(e.target.dataset.i!==undefined){tt[td].splice(e.target.dataset.i,1);store.set('tt',tt);drawTT()}};
+
+/* Homework */
+let hws=store.get('hw',[]);
+function drawH(){const l=[...hws].sort((a,b)=>a.x-b.x||((a.d||'9')<(b.d||'9')?-1:1));$('#hlist').innerHTML=l.length?l.map(h=>{const n=h.d?dayDiff(h.d):null;const tag=h.d?(n<0&&!h.x?'Overdue':n===0?'Due today':fmt(h.d)):'';return `<div class="item${h.x?' done':''}"><input type="checkbox" data-id="${h.id}" ${h.x?'checked':''} aria-label="Mark done"><div class="t">${esc(h.t)}<small>${esc(h.s||'')}${h.s&&tag?' · ':''}${tag}</small></div><button class="x" data-del="${h.id}" aria-label="Delete">✕</button></div>`}).join(''):'<div class="empty">No homework. Enjoy your free time!</div>'}
+$('#hadd').onclick=()=>{const t=$('#hw').value.trim();if(!t)return alert('Write the homework task.');hws.push({id:Date.now(),t,s:$('#hs').value.trim(),d:$('#hd').value,x:0});store.set('hw',hws);$('#hw').value='';drawH()};
+$('#hlist').onclick=e=>{const d=e.target.dataset;if(d.del){hws=hws.filter(h=>h.id!=d.del)}else if(d.id){const h=hws.find(h=>h.id==d.id);h.x=h.x?0:1}else return;store.set('hw',hws);drawH()};
+
+/* Revision */
+let rv=store.get('rev',[]);const GAPS=[1,3,7,15];
+function drawR(){$('#rlist').innerHTML=rv.length?rv.map(r=>`<div class="item" style="align-items:flex-start"><div class="t"><b>${esc(r.t)}</b><small>Studied on ${fmt(r.d)}</small><div class="rev">${GAPS.map((g,i)=>{const dt=addDays(r.d,g),n=dayDiff(dt);return `<label><input type="checkbox" data-id="${r.id}" data-i="${i}" ${r.c[i]?'checked':''}>${fmt(dt)}${!r.c[i]&&n<0?' (late)':!r.c[i]&&n===0?' (today)':''}</label>`}).join('')}</div></div><button class="x" data-del="${r.id}" aria-label="Delete">✕</button></div>`).join(''):'<div class="empty">No topics yet. Add what you studied today.</div>'}
+$('#radd').onclick=()=>{const t=$('#rt').value.trim();if(!t)return alert('Enter a topic.');rv.push({id:Date.now(),t,d:$('#rd').value||today(),c:[0,0,0,0]});store.set('rev',rv);$('#rt').value='';drawR()};
+$('#rlist').onclick=e=>{const d=e.target.dataset;if(d.del){rv=rv.filter(r=>r.id!=d.del)}else if(d.id&&d.i!==undefined){const r=rv.find(r=>r.id==d.id);r.c[d.i]=r.c[d.i]?0:1}else return;store.set('rev',rv);drawR()};
+
+$('#rd').value=today();drawM();drawC();drawT();drawTT();drawH();drawR();
+
+/* Pip the assistant */
+const MASC=`<svg viewBox='0 0 120 120' aria-hidden='true'><defs><linearGradient id='pg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#8fa8ff'/><stop offset='1' stop-color='#b79bff'/></linearGradient></defs><ellipse cx='60' cy='113' rx='26' ry='5' fill='#0006'/><circle cx='60' cy='70' r='40' fill='url(#pg)'/><g class='eye'><ellipse cx='45' cy='74' rx='7' ry='9' fill='#fff'/><circle cx='46' cy='75' r='4.5' fill='#14213d'/></g><g class='eye'><ellipse cx='75' cy='74' rx='7' ry='9' fill='#fff'/><circle cx='74' cy='75' r='4.5' fill='#14213d'/></g><circle cx='34' cy='88' r='6' fill='#ff8fa8' opacity='.6'/><circle cx='86' cy='88' r='6' fill='#ff8fa8' opacity='.6'/><path d='M51 90q9 8 18 0' stroke='#14213d' stroke-width='3' fill='none' stroke-linecap='round'/><path d='M42 40v10c0 6 36 6 36 0V40z' fill='#14213d'/><path d='M18 36 60 16l42 20-42 20z' fill='#1f2c52'/><path d='M100 37v16' stroke='#ffd23f' stroke-width='3'/><circle cx='100' cy='55' r='4' fill='#ffd23f'/></svg>`;
+const TIPS={home:['Hi {n}! I am Pip, your study buddy. Tap any tile to start.','Tap me any time to see tips for the page you are on.'],percent:['Choose what you want to find, then type two numbers and tap Calculate.','Example: scored 18 out of 20? Pick "X is what % of Y" and enter 18 and 20.'],marks:['Type each subject, the marks you got, and the total marks. Then tap Calculate.','Need more rows? Tap + Add subject.'],countdown:['Add your exam name and date. I will show how many days are left.','Check this every morning to stay on track.'],timer:['Study for 25 minutes, then rest for 5. This is called the Pomodoro method.','Keep your phone on silent while the timer runs.'],timetable:['Pick a day, then add the time and subject. Repeat for each day.','Plan study slots too, not only school classes.'],homework:['Write the task, subject and due date. Tick the box when it is done.','Start with the homework that is due first.'],revision:['After you study a topic, add it here. I will plan 4 revisions for you.','Revising on day 1, 3, 7 and 15 helps you remember for much longer.']};
+let pk='home',pi=0,tw=null,user=store.get('user',null);
+const say=t=>{clearInterval(tw);const b=$('#btxt');b.textContent='';let i=0;const s=t.replace('{n}',user?user.name:'there');tw=setInterval(()=>{b.textContent=s.slice(0,++i);if(i>=s.length)clearInterval(tw)},18)};
+function pipSay(k){if(!user)return;pk=k;pi=0;$('#bubble').hidden=false;say(TIPS[k][0])}
+$('#bnext').onclick=()=>{pi=(pi+1)%TIPS[pk].length;say(TIPS[pk][pi])};
+$('#bclose').onclick=()=>{$('#bubble').hidden=true};
+$('#pbtn').onclick=()=>{$('#bubble').hidden?pipSay(pk):$('#bubble').hidden=true};
+$('#lm').innerHTML=MASC;$('#pbtn').innerHTML=MASC;
+
+/* Login */
+const GOOGLE_CLIENT_ID=''; // Paste your Google client ID here to turn on real Google sign-in (works on your own hosted site)
+function renderUser(){$('#pip').hidden=!user;$('#hd p').innerHTML=user?'Hi '+esc(user.name)+'! Pick a tool to start. <button class="chip" id="lo">Log out</button>':'Free tools to plan, practise and track your studies.'}
+function finishLogin(u){user=u;store.set('user',u);renderUser();$('#login').classList.add('out');setTimeout(()=>{$('#login').hidden=true},750);pipSay(T.some(t=>t[0]===location.hash.slice(1))?location.hash.slice(1):'home')}
+$('#lgo').onclick=()=>{const n=$('#ln').value.trim();if(!n){$('#ln').focus();return}finishLogin({name:n})};
+$('#ln').onkeydown=e=>{if(e.key==='Enter')$('#lgo').click()};
+$('#hd').onclick=e=>{if(e.target.id==='lo'){user=null;store.set('user',null);$('#bubble').hidden=true;$('#login').classList.remove('out');$('#login').hidden=false;$('#ln').value='';renderUser()}};
+if(GOOGLE_CLIENT_ID){const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=()=>{google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:r=>{try{const p=JSON.parse(decodeURIComponent(escape(atob(r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));finishLogin({name:p.given_name||p.name||'Student',email:p.email})}catch(e){}}});google.accounts.id.renderButton($('#gbox'),{theme:'filled_blue',size:'large',shape:'pill',width:280})};document.head.appendChild(s)}
+$('#login').hidden=!!user;renderUser();
+show();
+</script>
+</body>
+</html>
